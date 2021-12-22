@@ -1,0 +1,46 @@
+{
+  "name": "node-red-contrib-edge-tts",
+  "version": "1.0.2",
+  "description": "Microsoft EDGE text to speech",
+  "main": "edge_tts.js",
+  "node-red": {
+   "nodes": {
+     "edge-tts": "edge_tts.js"
+   }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/iso-lib/node-red-contrib-edge-tts.git"
+  },
+  "bundleDependencies": false,
+  "dependencies": {
+	"babel-polyfill": "^6.26.0",
+	"msedge-tts": "^1.0.0"
+   },
+  "devDependencies": {
+	"@babel/core": "^7.16.5",
+	"babel-preset-env": "^1.7.0",
+	"babel-register": "^6.26.0",
+    "babel-eslint": "^10.0.1",
+    "eslint": "^5.16.0",
+    "eslint-config-vue": "^2.0.2",
+    "eslint-plugin-vue": "^5.2.2",
+    "eslint-utils": "^1.4.2"
+  },
+   
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "bugs": {
+    "url": "https://github.com/iso-lib/node-red-contrib-edge-tts/issues"
+  },
+  "homepage": "https://github.com/iso-lib/node-red-contrib-edge-tts#readme",
+  "keywords": [
+	"edge",
+	"node-red",
+	"tts"
+	],
+  "author": "iso-lib",
+  "license": "ISC"
+}
+

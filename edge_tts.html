@@ -1,0 +1,116 @@
+<script type="text/javascript">
+    RED.nodes.registerType('edge-tts',{
+        category: 'TTS',
+        color: '#a6bbcf',
+        defaults: {
+            name: {value:"EDGE语音合成"},
+			data: {value:""}, 
+			path: {value:""},
+			per: {value:""},
+			quality: {value:""}
+        },
+        inputs:1,
+        outputs:1,
+        icon: " function.png",
+        label: function() {
+            return this.name|| "EDGE-TTS";
+        },
+    });
+
+</script>
+
+<script type="text/x-red" data-template-name="edge-tts">
+    <div class="form-row">
+        <label for="node-config-input-name"><i class="icon-bookmark"></i> 默认名称</label>
+        <input type="text" id="node-input-name">
+    </div>
+
+    <div class="form-row">
+        <label for="node-input-data"><i class="icon-tag"></i>TTS文本</label>
+        <input type="text" id="node-input-data" maxlength='78' placeholder="(msg.data)">
+    </div>
+	
+    <div class="form-row">
+        <label for="node-input-path"><i class="icon-tag"></i>mp3文件名</label>
+        <input type="text" id="node-input-path" maxlength='78' placeholder="可带路径,留空为当前路径下tts.mp3">
+    </div>
+	
+	<hr>
+    <div class="form-row">
+      <label style="width: 100%; text-align: center; color: #f4a460;">下方参数可选配置</label>
+    </div>
+
+    <div class="form-row">
+        <label for="node-input-per"><i class="icon-tag"></i>发音角色</label>
+		<select type="text" id="node-input-per" style="width:70%">
+			<optgroup label="普通话">
+			  <option value="zh-CN-XiaoxiaoNeural" style="color: #ff00ff">晓晓</option>
+			  <option value="zh-CN-XiaohanNeural" style="color: #ff00ff">晓涵</option>
+			  <option value="zh-CN-XiaomoNeural" style="color: #ff00ff">晓墨</option>
+			  <option value="zh-CN-XiaoruiNeural" style="color: #ff00ff">晓睿</option>
+			  <option value="zh-CN-XiaoxuanNeural" style="color: #ff00ff">晓萱</option>
+			  <option value="zh-CN-XiaoyouNeural" style="color: #ff00ff">晓悠</option>
+			  <option value="zh-CN-YunyangNeural" style="color: #0000ff">云扬</option>
+			  <option value="zh-CN-YunxiNeural" style="color: #0000ff">云希</option>
+			  <option value="zh-CN-YunyeNeural" style="color: #0000ff">云野</option>
+			</optgroup>
+			<optgroup label="廣東話">
+			  <option value="zh-HK-HiuMaanNeural" style="color: #ff00ff">曉曼</option>
+			  <option value="zh-HK-HiuGaaiNeural" style="color: #ff00ff">曉佳</option>
+			  <option value="zh-HK-WanLungNeural" style="color: #0000ff">雲龍</option>
+			</optgroup>
+			<optgroup label="臺灣話">
+			  <option value="zh-TW-HsiaoChenNeural" style="color: #ff00ff">曉臻</option>
+			  <option value="zh-TW-HsiaoYuNeural" style="color: #ff00ff">曉雨</option>
+			  <option value="zh-TW-YunJheNeural" style="color: #0000ff">雲哲</option>
+			</optgroup>
+			<optgroup label="English(United States)">
+			  <option value="en-US-JennyNeural" style="color: #ff00ff">Jenny</option>
+			  <option value="en-US-ElizabethNeural" style="color: #ff00ff">Elizabeth</option>
+			  <option value="en-US-AmberNeural" style="color: #ff00ff">Amber</option>
+			  <option value="en-US-AnaNeural" style="color: #ff00ff">Ana</option>
+			  <option value="en-US-AriaNeural" style="color: #ff00ff">Aria</option>
+			  <option value="en-US-AshleyNeural" style="color: #ff00ff">Ashley</option>
+			  <option value="en-US-MichelleNeural" style="color: #ff00ff">Michelle</option>
+			  <option value="en-US-MonicaNeural" style="color: #ff00ff">Monica</option>
+			  <option value="en-US-SaraNeural" style="color: #ff00ff">Sara</option>
+			  <option value="en-US-CoraNeural" style="color: #ff00ff">Cora</option>
+			  <option value="en-US-ChristopherNeural" style="color: #0000ff">Christopher</option>
+			  <option value="en-US-GuyNeural" style="color: #0000ff">Guy</option>
+			  <option value="en-US-BrandonNeural" style="color: #0000ff">Brandon</option>
+			  <option value="en-US-EricNeural" style="color: #0000ff">Eric</option>
+			  <option value="en-US-JacobNeural" style="color: #0000ff">Jacob</option>
+			</optgroup>
+		</select>
+    </div>
+	
+    <div class="form-row">
+        <label for="node-input-quality"><i class="icon-tag"></i>音频合成质量</label>
+		<select type="text" id="node-input-quality" style="width:70%">
+			<option value="AUDIO_16KHZ_32KBITRATE_MONO_MP3">audio-16khz-32kbitrate-mono-mp3</option>
+			<option value="AUDIO_16KHZ_64KBITRATE_MONO_MP3">audio-16khz-64kbitrate-mono-mp3</option>
+			<option value="AUDIO_16KHZ_128KBITRATE_MONO_MP3">audio-16khz-128kbitrate-mono-mp3</option>
+			<option value="AUDIO_24KHZ_48KBITRATE_MONO_MP3">audio-24khz-48kbitrate-mono-mp3</option>
+			<option value="AUDIO_24KHZ_96KBITRATE_MONO_MP3">audio-24khz-96kbitrate-mono-mp3</option>
+			<option value="AUDIO_24KHZ_160KBITRATE_MONO_MP3">audio-24khz-160kbitrate-mono-mp3</option>
+			<option value="AUDIO_48KHZ_96KBITRATE_MONO_MP3">audio-48khz-96kbitrate-mono-mp3</option>
+			<option value="AUDIO_48KHZ_192KBITRATE_MONO_MP3">audio-48khz-192kbitrate-mono-mp3</option>
+		</select>
+    </div>
+		
+    <div class="form-row">
+        <label style="width: 100%;text-align: center;box-sizing: border-box;" >
+          <a href="https://github.com/iso-lib/node-red-contrib-edge-tts" target="_blank">使用中如有疑惑请点击此处寻求帮助。</a>
+        </label>
+    </div>
+
+</script>
+
+
+<script type="text/x-red" data-help-name="edge-tts">
+    <p>EDGE语音合成配置</p>
+    <p>可在TTS文本框中直接输入文字,例如 你好主人,欢迎回家 </p>
+    <p>如果留空,则会合成上个节点传入的 msg.data 内容</p>
+
+</script>
+
