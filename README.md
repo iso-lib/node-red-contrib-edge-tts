@@ -1,18 +1,31 @@
-# 欢迎使用node-red-contrib-edge-tts
-
-
 ## 节点功能为将输入的文字转为语音,并存储为mp3文件
+
+
+### 本节点基于微软EDGE浏览器的大声朗读语音合成引擎,无需注册,可直接使用,无期限.
+
 #### 可直接在本节点TTS文本框内输入文字,如果留空则会使用上个节点传来的msg.data的内容
 
 
+
+- 注意,只能命令行安装,不能在浏览器面板上点击安装,会报错无法使用.
+- 注意,只能命令行安装,不能在浏览器面板上点击安装,会报错无法使用.
+- 注意,只能命令行安装,不能在浏览器面板上点击安装,会报错无法使用.
+
+重要的事情说三遍.
+
+原因我也不知道,没学过编程,代码是东拼西凑的,有懂得大佬请上git告诉我.
 
 音频合成质量由低向高,质量越高,生成的mp3文件越大,耗费服务器资源越高,请合理选择.
 
 
 
 
-## 安装
-npm install node-red-contrib-edge-tts
+## 安装方法,注意看
+- 下载[压缩包](https://github.com/iso-lib/node-red-contrib-edge-tts/releases)
+- 解压
+- 复制到node-red相关目录下,例如/data
+- npm install /data/node-red-contrib-edge-tts/
+- 重启一下node-red
 
 
 

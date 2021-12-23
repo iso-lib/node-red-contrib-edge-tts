@@ -4,4 +4,4 @@ require('babel-register') ({
 require("babel-polyfill");
 
 
-module.exports = require("./server.js")
+module.exports = require("./get_tts.js")
