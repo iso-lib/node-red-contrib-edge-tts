@@ -1,12 +1,12 @@
 {
   "name": "node-red-contrib-edge-tts",
-  "version": "1.0.5",
-  "description": "Microsoft EDGE text to speech.You can only use the command line to install. If you use the web panel to install, an error will be reported.",
+  "version": "2.0.1",
+  "description": "An simple Azure Speech Service module that uses the Microsoft Edge Read Aloud API.",
   "main": "edge_tts.js",
   "node-red": {
-   "nodes": {
-     "edge-tts": "edge_tts.js"
-   }
+    "nodes": {
+      "edge-tts": "edge_tts.js"
+    }
   },
   "repository": {
     "type": "git",
@@ -14,12 +14,11 @@
   },
   "bundleDependencies": false,
   "dependencies": {
-	"@babel/core": "^7.16.5",
-	"babel-preset-env": "^1.7.0",
-	"babel-register": "^6.26.0",
-	"babel-polyfill": "^6.26.0",
-	"msedge-tts": "^1.0.0"
-   },   
+    "ws": "^8.0.0"
+  },
+  "devDependencies": {
+    "ws": ""
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -28,11 +27,11 @@
   },
   "homepage": "https://github.com/iso-lib/node-red-contrib-edge-tts#readme",
   "keywords": [
-	"edge",
-	"node-red",
-	"tts"
-	],
+    "edge",
+    "node-red",
+    "tts",
+    "readaloud"
+  ],
   "author": "iso-lib",
-  "license": "ISC"
+  "license": "MIT"
 }
-

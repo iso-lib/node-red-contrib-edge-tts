@@ -3,11 +3,10 @@
         category: 'TTS',
         color: '#a6bbcf',
         defaults: {
-            name: {value:"EDGE语音合成"},
+            name: {value:"EDGE-TTS"},
 			data: {value:""}, 
 			path: {value:""},
-			per: {value:""},
-			quality: {value:""}
+			per: {value:""}
         },
         inputs:1,
         outputs:1,
@@ -27,12 +26,12 @@
 
     <div class="form-row">
         <label for="node-input-data"><i class="icon-tag"></i>TTS文本</label>
-        <input type="text" id="node-input-data" maxlength='78' placeholder="(msg.data)">
+        <i><input type="text" id="node-input-data" maxlength='78' placeholder="请传入msg.data，或者直接在此输入文本"></i>
     </div>
 	
     <div class="form-row">
         <label for="node-input-path"><i class="icon-tag"></i>mp3文件名</label>
-        <input type="text" id="node-input-path" maxlength='78' placeholder="可带路径,留空为当前路径下tts.mp3">
+        <input type="text" id="node-input-path" maxlength='78' placeholder="请传入msg.path，默认tts.mp3，可在此处指定">
     </div>
 	
 	<hr>
@@ -41,8 +40,9 @@
     </div>
 
     <div class="form-row">
-        <label for="node-input-per"><i class="icon-tag"></i>发音角色</label>
+        <label for="node-input-per"> <i class="icon-tag"></i>发音角色</label>
 		<select type="text" id="node-input-per" style="width:70%">
+            <option value=""> --msg.per-- </option>
 			<optgroup label="普通话">
 			  <option value="zh-CN-XiaoxiaoNeural" style="color: #ff00ff">晓晓</option>
 			  <option value="zh-CN-XiaohanNeural" style="color: #ff00ff">晓涵</option>
@@ -83,10 +83,12 @@
 			</optgroup>
 		</select>
     </div>
-	
+
+	<!--
     <div class="form-row">
         <label for="node-input-quality"><i class="icon-tag"></i>音频合成质量</label>
 		<select type="text" id="node-input-quality" style="width:70%">
+			<option value="">msg.quality</option>
 			<option value="AUDIO_16KHZ_32KBITRATE_MONO_MP3">audio-16khz-32kbitrate-mono-mp3</option>
 			<option value="AUDIO_16KHZ_64KBITRATE_MONO_MP3">audio-16khz-64kbitrate-mono-mp3</option>
 			<option value="AUDIO_16KHZ_128KBITRATE_MONO_MP3">audio-16khz-128kbitrate-mono-mp3</option>
@@ -97,6 +99,7 @@
 			<option value="AUDIO_48KHZ_192KBITRATE_MONO_MP3">audio-48khz-192kbitrate-mono-mp3</option>
 		</select>
     </div>
+	-->
 		
     <div class="form-row">
         <label style="width: 100%;text-align: center;box-sizing: border-box;" >
@@ -109,8 +112,13 @@
 
 <script type="text/x-red" data-help-name="edge-tts">
     <p>EDGE语音合成配置</p>
-    <p>可在TTS文本框中直接输入文字,例如 你好主人,欢迎回家 </p>
-    <p>如果留空,则会合成上个节点传入的 msg.data 内容</p>
-
+	<p>msg.data：要合成的文本内容</p>
+	<p>msg.path：语音文件存放路径，缺省为当前路径tts.mp3</p>
+	<p>msg.per：声音角色，也可从下拉框选择,缺省为zh-CN-XiaoxiaoNeural</p>
+	<p>还有几个隐藏属性，供高级玩家设置</p>
+	<p>msg.quality：合成音频格式及质量，缺省为audio-24khz-48kbitrate-mono-mp3</p>
+	<p>msg.pitch：音调，缺省是0</p>
+	<p>msg.rate：语速，缺省是0</p>
+	<p>msg.volume：音量，缺省是0</p>
 </script>
 
