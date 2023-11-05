@@ -11,9 +11,9 @@ An simple Azure Speech Service module that uses the Microsoft Edge Read Aloud AP
 
 
 
-![](sample.png)
 
 
+![](https://github.com/iso-lib/node-red-contrib-edge-tts/blob/main/sample.png?raw=true)
 
 输入：
 
