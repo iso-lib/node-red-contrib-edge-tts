@@ -1,0 +1,14 @@
+{
+  "common": {
+    "label": {
+      "name": "名称",
+      "text": "语音文本",
+      "text_tip": "接收msg.data，或者直接在此输入",
+      "file": "文件名",
+      "file_tip": "接收msg.path，或者直接在此输入",
+      "per": "声音角色",
+      "per_tip": "下方可选设置",
+      "help": "点击此处寻求帮助"
+    }
+  }
+}

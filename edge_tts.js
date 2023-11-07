@@ -10,7 +10,7 @@ module.exports = function (RED) {
 		node.on('input', function (msg) {
 			var ttsData,ttsPath,ttsPer,ttsQuality,ttsPitch,ttsRate,ttsVolume;
 			if  (config.data.replace(/(^[ \t\n\r]*)|([ \t\n\r]*$)/g, '').length == 0) {
-				ttsData = msg.data||'您没有配置语音文本,请检查配置!';
+				ttsData = msg.data|| "Warning, the text to speech content is empty, please check the parameters";
 			} else {
 				ttsData = config.data;
 			}
@@ -70,7 +70,7 @@ module.exports = function (RED) {
 			    const filePath = yield tts.toFile(ttsPath, ttsData);
 			}))()				   
 			 .then(function(filePath) {
-					    node.status({ text: `合成成功，保存为 ${ttsPath}` });
+					    node.status({ text: `Done! ${ttsPath}` });
 					    
 						fs.readFile(ttsPath , function(err,body) {
 							if (err) throw err;

@@ -1,0 +1,14 @@
+{
+  "common": {
+    "label": {
+      "name": "name",
+      "text": "Text",
+      "text_tip": "Accept the incoming msg.data or enter it here",
+      "file": "File Name",
+      "file_tip": "Accept the incoming msg.path or enter it here",
+      "per": "Speaker Role",
+      "per_tip": "The next option is optional parameters",
+      "help": "Click here for help"
+    }
+  }
+}
