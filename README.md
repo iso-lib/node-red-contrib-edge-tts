@@ -33,7 +33,18 @@ msg.rate：语速，缺省是0
 
 msg.volume：音量，缺省是0
 
+-------------------
 
+Input:
+msg.data：Text content to be synthesized
+msg.path：The path for storing voice files defaults to the current path tts.mp3
+msg.per：Sound character, can also be selected from the drop-down box,default value is the zh-CN-XiaoxiaoNeural
+
+There are also several hidden attributes for advanced players to set
+msg.quality：Synthetic audio format and quality，default value is audio-24khz-48kbitrate-mono-mp3
+msg.pitch：default value is 0
+msg.rate：default value is 0
+msg.volume：default value is 0
 
 Thanks
 
@@ -44,6 +55,6 @@ Thanks
 
 
 
-结束
+end
 
 ****
