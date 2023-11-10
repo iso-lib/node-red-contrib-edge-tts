@@ -29,7 +29,7 @@ class MsEdgeTTS {
         this._pitch = 0;
         this._rate = 0;
         this._volume = 0;
-        this._enableLogger = false;
+        this._enableLogger = enableLogger;
         this._agent = agent;
     }
     _log(...o) {
