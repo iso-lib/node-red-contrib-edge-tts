@@ -11,10 +11,13 @@ An simple Azure Speech Service module that uses the Microsoft Edge Read Aloud AP
 
 
 
-
+##### Basic Usage
 
 ![](https://github.com/iso-lib/node-red-contrib-edge-tts/blob/main/src/sample.png?raw=true)
 
+##### Advanced Usage
+
+![](https://github.com/iso-lib/node-red-contrib-edge-tts/blob/main/src/sample3.png?raw=true)
 
 Input:
 

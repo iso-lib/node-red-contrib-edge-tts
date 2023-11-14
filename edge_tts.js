@@ -76,11 +76,11 @@ module.exports = function (RED) {
 							if (err) throw err;
 							var buffer = {data:body};
 							//console.log( buffer);
-							node.send({platform: 'ms-edge' , data: ttsData , result: buffer});
+							node.send({platform: 'ms-edge' , data: ttsData , path: ttsPath , result: buffer});
 							});
 				    })
 						.catch(function(error) {
-						   console.error("Error:", error);
+						   node.send("Error:", error);
 						 });
 		})
 	}
