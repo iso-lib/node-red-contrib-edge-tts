@@ -7,7 +7,8 @@ module.exports = function (RED) {
         RED.nodes.createNode(this, config);
 		var node = this;
 		
-		node.on('input', function (msg) {
+		node.on('input', function (msg, send) {
+			node.status('');
 			var ttsData,ttsPath,ttsPer,ttsQuality,ttsPitch,ttsRate,ttsVolume;
 			if  (config.data.replace(/(^[ \t\n\r]*)|([ \t\n\r]*$)/g, '').length == 0) {
 				ttsData = msg.data|| "Warning, the text to speech content is empty, please check the parameters";
@@ -74,9 +75,13 @@ module.exports = function (RED) {
 					    
 						fs.readFile(ttsPath , function(err,body) {
 							if (err) throw err;
-							var buffer = {data:body};
-							//console.log( buffer);
-							node.send({platform: 'ms-edge' , data: ttsData , path: ttsPath , result: buffer});
+							msg.result = {data:body};
+							msg.platform="ms-edge";
+							msg.data=ttsData;
+							msg.path=ttsPath;
+
+							//node.send({platform: 'ms-edge' , data: ttsData , path: ttsPath , result: buffer});
+							send(msg);
 							});
 				    })
 						.catch(function(error) {
