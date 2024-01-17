@@ -1,5 +1,5 @@
 const fs = require("fs");
-const EdgeTTS = require("./src/EdgeTTS");
+const { MsEdgeTTS, OUTPUT_FORMAT } = require('msedge-tts');
 
 
 module.exports = function (RED) {
@@ -34,43 +34,16 @@ module.exports = function (RED) {
 			ttsPitch = msg.pitch||0;
 			ttsRate = msg.rate||0;
 			ttsVolume = msg.volume||0;
-			
-			var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-			    function adopt(value) { 
-			    	return value instanceof P ? value : new P(function (resolve) 
-		    		{ resolve(value); 
 
-		    		}); 
-		    	}
-			    return new (P || (P = Promise))(function (resolve, reject) {
-			        function fulfilled(value) { 
-				        try { 
-					        step(generator.next(value)); 
-					    } catch (e) { 
-						    reject(e); 
-						} 
-					}
-			        function rejected(value) { 
-				        try { 
-					        step(generator["throw"](value)); 
-					        } catch (e) { 
-						        reject(e); 
-						    } 
-						}
-			        function step(result) { 
-				        result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); 
-				    }
-			        step((generator = generator.apply(thisArg, _arguments || [])).next());
-			    });
-			};
-			Object.defineProperty(exports, "__esModule", { value: true });
 
-			(() => __awaiter(void 0, void 0, void 0, function* () {
-			    const tts = new EdgeTTS.MsEdgeTTS(null, true);
-			    yield tts.setMetadata(ttsPer, ttsQuality, ttsPitch, ttsRate, ttsVolume);
-			    const filePath = yield tts.toFile(ttsPath, ttsData);
-			}))()				   
-			 .then(function(filePath) {
+
+
+(async () => {
+    const tts = new MsEdgeTTS();
+    await tts.setMetadata(ttsPer, ttsQuality);
+    const filePath = await tts.toFile(ttsPath, ttsData);  
+})()
+    .then(function(filePath) {
 					    node.status({ text: `Done! ${ttsPath}` });
 					    
 						fs.readFile(ttsPath , function(err,body) {

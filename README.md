@@ -9,7 +9,8 @@ An simple Azure Speech Service module that uses the Microsoft Edge Read Aloud AP
 
 #### 可直接在本节点TTS文本框内输入文字,如果留空则会使用上个节点传来的msg.data的内容
 
-
+#### Update log
+##### 2024-01-17 Some users reported errors during use and updated a temporary software package version. Normal users can continue to use version 2.2.4
 
 ##### Basic Usage
 
