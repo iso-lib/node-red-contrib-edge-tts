@@ -1,79 +1,125 @@
-An simple Azure Speech Service module that uses the Microsoft Edge Read Aloud API.
+# node-red-contrib-edge-tts
+
+A Node-RED node that converts text to speech using Microsoft Edge's Text-to-Speech service. This node provides a simple way to integrate Azure Speech Service capabilities into your Node-RED flows without requiring an Azure account or API key.
+
+## Overview
+
+This node uses the Microsoft Edge Read Aloud API to generate high-quality speech from text. It supports a wide range of voices across multiple languages and dialects, with customizable speech parameters such as rate, pitch, and volume.
 
 
 
-## 节点功能为将输入的文字转为语音,并存储为mp3文件
+## Changlog
 
+### 2025-04-25 ：
 
-### 本节点基于微软EDGE浏览器的大声朗读语音合成引擎,无需注册,直接使用,无期限.
-
-#### 可直接在本节点TTS文本框内输入文字,如果留空则会使用上个节点传来的msg.data的内容
-
-#### Update log
-##### 2024-01-17 Some users reported errors during use and updated a temporary software package version. Normal users can continue to use version 2.2.4
-
-##### Basic Usage
-
-![](https://github.com/iso-lib/node-red-contrib-edge-tts/blob/main/src/sample.png?raw=true)
-
-##### Advanced Usage
-
-![](https://github.com/iso-lib/node-red-contrib-edge-tts/blob/main/src/sample3.png?raw=true)
-
-Input:
-
-msg.data：Text content to be synthesized
-
-msg.path：The path for storing voice files defaults to the current path tts.mp3
-
-msg.per：Sound character, can also be selected from the drop-down box,default value is the zh-CN-XiaoxiaoNeural
-
-
-There are also several hidden attributes for advanced players to set
-
-msg.quality：Synthetic audio format and quality，default value is audio-24khz-48kbitrate-mono-mp3
-
-msg.pitch：default value is 0
-
-msg.rate：default value is 0
-
-msg.volume：default value is 0
-
-
------------------------------------
-
-输入：
-
-msg.data：要转换的文本内容
-
-msg.path：语音文件存放路径，缺省为当前路径tts.mp3
-
-msg.per：声音角色，也可从下拉框选择,缺省为zh-CN-XiaoxiaoNeural
-
-还有几个隐藏属性，供高级玩家设置
-
-msg.quality：合成音频格式及质量，缺省为audio-24khz-48kbitrate-mono-mp3
-
-msg.pitch：音调，缺省是0
-
-msg.rate：语速，缺省是0
-
-msg.volume：音量，缺省是0
-
--------------------
+- Update version 3. x
+- Not compatible with version 2. x
+- Add voice character
+- Add new agent
+- Other modifications
 
 
 
+## Features
 
-Thanks
+- No Azure account or API key required
+- 100+ neural voices across multiple languages
+- Adjustable speech parameters (rate, pitch, volume)
+- Multiple output formats
+- Support for SOCKS proxy
+- Word and sentence boundary markers (optional)
 
-@Migushthe2nd
+## Installation
 
-[@Migushthe2nd]: https://github.com/iso-lib/MsEdgeTTS
+Install via Node-RED's Manage Palette:
 
+```
+node-red-contrib-edge-tts
+```
 
+Or install via npm:
 
+```bash
+npm install node-red-contrib-edge-tts
+```
 
-end
+## Requirements
 
-****
+- Node.js >= 16.0.0
+- Node-RED >= 3.0.0
+
+## Usage
+
+1. Drag the "MS Edge TTS" node from the TTS category in the palette to your flow
+2. Configure the node with your desired voice and other parameters
+3. Send a message with text to convert to speech
+3. ![](src/sample1.png)
+3. ![](src/sample2.png)
+
+### Input
+
+The node accepts the following input properties:
+
+- `msg.payload` (string): Text to convert to speech (if `msg.text` is not provided)
+- `msg.text` (string): Text to convert to speech (takes precedence over payload)
+- `msg.filename` (string): Path to save the audio file (default: `tts_[timestamp].mp3`)
+- `msg.voice` (string): Voice to use for speech synthesis
+- `msg.rate` (number): Speech rate adjustment (-100 to 100)
+- `msg.pitch` (number): Speech pitch adjustment in Hz
+- `msg.volume` (number): Speech volume (0-100)
+- `msg.format` (string): Audio output format
+- `msg.agent` (string): SOCKS proxy URL (if needed)
+- `msg.voiceLocale` (string): Voice locale
+- `msg.sentenceBoundary` (boolean): Enable sentence boundary markers
+- `msg.wordBoundary` (boolean): Enable word boundary markers
+
+### Output
+
+The node outputs a message with the following properties:
+
+- `msg.result`: Buffer containing the audio data
+- `msg.filename`: Path to the saved audio file
+
+## Configuration
+
+### Basic Settings
+
+- **Name**: Custom name for the node (optional)
+- **Voice**: Select from 100+ available neural voices
+- **Text**: Default text to convert (can be overridden by input message)
+- **Filename**: Default path to save the audio file
+
+### Advanced Settings
+
+- **Rate**: Speech rate adjustment (-100 to 100)
+- **Pitch**: Speech pitch adjustment in Hz
+- **Volume**: Speech volume (0-100)
+- **Format**: Audio output format (default: audio-24khz-48kbitrate-mono-mp3)
+- **Voice Locale**: Voice locale setting
+- **Sentence Boundary**: Enable sentence boundary markers
+- **Word Boundary**: Enable word boundary markers
+- **Proxy Agent**: SOCKS proxy URL (if needed)
+
+## Example Flow
+
+A simple example flow is included in the examples directory.
+
+## Supported Voices
+
+The node supports a wide range of voices across multiple languages and dialects, including:
+
+- English (US, UK, Australia, etc.)
+- Chinese (Mandarin, Cantonese, etc.)
+- And many more
+
+## License
+
+Refer to the LICENSE file in the repository.
+
+## Credits
+
+This node is based on the [msedge-tts](https://github.com/microsoft/msedge-tts) package.
+
+## Issues and Contributions
+
+Please report any issues or feature requests on the [GitHub repository](https://github.com/iso-lib/node-red-contrib-edge-tts/issues).

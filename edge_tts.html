@@ -1,122 +1,874 @@
 <script type="text/javascript">
-    RED.nodes.registerType('edge-tts',{
+    RED.nodes.registerType('edge-tts', {
         category: 'TTS',
         color: '#a6bbcf',
         defaults: {
-            name: {value:"EDGE-TTS"},
-			data: {value:""}, 
-			path: {value:""},
-			per: {value:""}
+            name: { value:"" },
+            voice: { value: 'en-US-AriaNeural', required: true },
+            text: { value:"" }, 
+			filename: {value:""},
+            rate: { value: 0, validate: RED.validators.number(true) },
+            pitch: { value: 0, validate: RED.validators.number(true) },
+            volume: { value: 100, validate: RED.validators.number(true) },
+            format: { value: 'audio-24khz-48kbitrate-mono-mp3', required: true },
+			voiceLocale: { value:"" }, 
+			sentenceBoundary: { value:"false" }, 
+			wordBoundary: { value:"false" }, 
+			agent: { value: ""}
         },
-        inputs:1,
+        inputs: 1,
         outputs:1,
-        icon: " function.png",
+        icon: 'font-awesome/fa-file-audio-o',
         label: function() {
-            return this.name|| "EDGE-TTS";
+            return this.name || 'MS Edge TTS';
         },
+        oneditprepare: function() {
+			$("#node-input-advanced").change(function() {
+      			if ($(this).is(':checked')) {
+      				$("#node-input-advanced-row").show()
+      			} else {
+      				$("#node-input-advanced-row").hide()
+      			}
+			});
+
+            var voiceSelect = $('#node-input-voice');
+            var node = this;
+            // 清空现有选项
+            voiceSelect.empty();
+            
+            // 直接使用voices数据，不再从外部文件加载
+            var voices = {
+			    "wuyu": [
+			        {
+			            "value": "wuu-CN-XiaotongNeural",
+			            "text": "wuu-CN-XiaotongNeural",
+			            "gender": "female"
+			        },
+			        {
+			            "value": "wuu-CN-YunzheNeural",
+			            "text": "wuu-CN-YunzheNeural",
+			            "gender": "male"
+			        }
+			    ],
+			    "cantonese": [
+			        {
+			            "value": "yue-CN-XiaoMinNeural",
+			            "text": "yue-CN-XiaoMinNeural",
+			            "gender": "female"
+			        },
+			        {
+			            "value": "yue-CN-YunSongNeural",
+			            "text": "yue-CN-YunSongNeural",
+			            "gender": "male"
+			        },
+			        {
+			            "value": "zh-HK-HiuMaanNeural",
+			            "text": "zh-HK-HiuMaanNeural",
+			            "gender": "female"
+			        },
+			        {
+			            "value": "zh-HK-WanLungNeural",
+			            "text": "zh-HK-WanLungNeural",
+			            "gender": "male"
+			        },
+			        {
+			            "value": "zh-HK-HiuGaaiNeural",
+			            "text": "zh-HK-HiuGaaiNeural",
+			            "gender": "female"
+			        }
+			    ],
+			    "mandarin": [
+			        {
+			            "value": "zh-CN-XiaoxiaoNeural",
+			            "text": "zh-CN-XiaoxiaoNeural",
+			            "gender": "female"
+			        },
+			        {
+			            "value": "zh-CN-YunxiNeural",
+			            "text": "zh-CN-YunxiNeural",
+			            "gender": "male"
+			        },
+			        {
+			            "value": "zh-CN-YunjianNeural",
+			            "text": "zh-CN-YunjianNeural",
+			            "gender": "male"
+			        },
+			        {
+			            "value": "zh-CN-XiaoyiNeural",
+			            "text": "zh-CN-XiaoyiNeural",
+			            "gender": "female"
+			        },
+			        {
+			            "value": "zh-CN-YunyangNeural",
+			            "text": "zh-CN-YunyangNeural",
+			            "gender": "male"
+			        },
+			        {
+			            "value": "zh-CN-XiaochenNeural",
+			            "text": "zh-CN-XiaochenNeural",
+			            "gender": "female"
+			        },
+			        {
+			            "value": "zh-CN-XiaochenMultilingualNeural",
+			            "text": "zh-CN-XiaochenMultilingualNeural",
+			            "gender": "female"
+			        },
+			        {
+			            "value": "zh-CN-XiaohanNeural",
+			            "text": "zh-CN-XiaohanNeural",
+			            "gender": "female"
+			        },
+			        {
+			            "value": "zh-CN-XiaomengNeural",
+			            "text": "zh-CN-XiaomengNeural",
+			            "gender": "female"
+			        },
+			        {
+			            "value": "zh-CN-XiaomoNeural",
+			            "text": "zh-CN-XiaomoNeural",
+			            "gender": "female"
+			        },
+			        {
+			            "value": "zh-CN-XiaoqiuNeural",
+			            "text": "zh-CN-XiaoqiuNeural",
+			            "gender": "female"
+			        },
+			        {
+			            "value": "zh-CN-XiaorouNeural",
+			            "text": "zh-CN-XiaorouNeural",
+			            "gender": "female"
+			        },
+			        {
+			            "value": "zh-CN-XiaoruiNeural",
+			            "text": "zh-CN-XiaoruiNeural",
+			            "gender": "female"
+			        },
+			        {
+			            "value": "zh-CN-XiaoshuangNeural",
+			            "text": "zh-CN-XiaoshuangNeural",
+			            "gender": "female"
+			        },
+			        {
+			            "value": "zh-CN-XiaoxiaoDialectsNeural",
+			            "text": "zh-CN-XiaoxiaoDialectsNeural",
+			            "gender": "female"
+			        },
+			        {
+			            "value": "zh-CN-XiaoxiaoMultilingualNeural",
+			            "text": "zh-CN-XiaoxiaoMultilingualNeural",
+			            "gender": "female"
+			        },
+			        {
+			            "value": "zh-CN-XiaoyanNeural",
+			            "text": "zh-CN-XiaoyanNeural",
+			            "gender": "female"
+			        },
+			        {
+			            "value": "zh-CN-XiaoyouNeural",
+			            "text": "zh-CN-XiaoyouNeural",
+			            "gender": "female"
+			        },
+			        {
+			            "value": "zh-CN-XiaoyuMultilingualNeural",
+			            "text": "zh-CN-XiaoyuMultilingualNeural",
+			            "gender": "female"
+			        },
+			        {
+			            "value": "zh-CN-XiaozhenNeural",
+			            "text": "zh-CN-XiaozhenNeural",
+			            "gender": "female"
+			        },
+			        {
+			            "value": "zh-CN-YunfengNeural",
+			            "text": "zh-CN-YunfengNeural",
+			            "gender": "male"
+			        },
+			        {
+			            "value": "zh-CN-YunhaoNeural",
+			            "text": "zh-CN-YunhaoNeural",
+			            "gender": "male"
+			        },
+			        {
+			            "value": "zh-CN-YunjieNeural",
+			            "text": "zh-CN-YunjieNeural",
+			            "gender": "male"
+			        },
+			        {
+			            "value": "zh-CN-YunxiaNeural",
+			            "text": "zh-CN-YunxiaNeural",
+			            "gender": "male"
+			        },
+			        {
+			            "value": "zh-CN-YunyeNeural",
+			            "text": "zh-CN-YunyeNeural",
+			            "gender": "male"
+			        },
+			        {
+			            "value": "zh-CN-YunyiMultilingualNeural",
+			            "text": "zh-CN-YunyiMultilingualNeural",
+			            "gender": "male"
+			        },
+			        {
+			            "value": "zh-CN-YunzeNeural",
+			            "text": "zh-CN-YunzeNeural",
+			            "gender": "male"
+			        },
+			        {
+			            "value": "zh-CN-YunfanMultilingualNeural",
+			            "text": "zh-CN-YunfanMultilingualNeural",
+			            "gender": "male"
+			        },
+			        {
+			            "value": "zh-CN-YunxiaoMultilingualNeural",
+			            "text": "zh-CN-YunxiaoMultilingualNeural",
+			            "gender": "male"
+			        },
+			        {
+			            "value": "zh-CN-Xiaochen:DragonHDLatestNeural",
+			            "text": "zh-CN-Xiaochen:DragonHDLatestNeural",
+			            "gender": "female"
+			        }
+			    ],
+			    "guangxi": [
+			        {
+			            "value": "zh-CN-guangxi-YunqiNeural",
+			            "text": "zh-CN-guangxi-YunqiNeural",
+			            "gender": "male"
+			        }
+			    ],
+			    "henan": [
+			        {
+			            "value": "zh-CN-henan-YundengNeural",
+			            "text": "zh-CN-henan-YundengNeural",
+			            "gender": "male"
+			        }
+			    ],
+			    "dongbei": [
+			        {
+			            "value": "zh-CN-liaoning-XiaobeiNeural",
+			            "text": "zh-CN-liaoning-XiaobeiNeural",
+			            "gender": "female"
+			        },
+			        {
+			            "value": "zh-CN-liaoning-YunbiaoNeural",
+			            "text": "zh-CN-liaoning-YunbiaoNeural",
+			            "gender": "male"
+			        }
+			    ],
+			    "shaanxi": [
+			        {
+			            "value": "zh-CN-shaanxi-XiaoniNeural",
+			            "text": "zh-CN-shaanxi-XiaoniNeural",
+			            "gender": "female"
+			        }
+			    ],
+			    "jilu": [
+			        {
+			            "value": "zh-CN-shandong-YunxiangNeural",
+			            "text": "zh-CN-shandong-YunxiangNeural",
+			            "gender": "male"
+			        }
+			    ],
+			    "xinan": [
+			        {
+			            "value": "zh-CN-sichuan-YunxiNeural",
+			            "text": "zh-CN-sichuan-YunxiNeural",
+			            "gender": "male"
+			        }
+			    ],
+			    "taiwan": [
+			        {
+			            "value": "zh-TW-HsiaoChenNeural",
+			            "text": "zh-TW-HsiaoChenNeural",
+			            "gender": "female"
+			        },
+			        {
+			            "value": "zh-TW-YunJheNeural",
+			            "text": "zh-TW-YunJheNeural",
+			            "gender": "male"
+			        },
+			        {
+			            "value": "zh-TW-HsiaoYuNeural",
+			            "text": "zh-TW-HsiaoYuNeural",
+			            "gender": "female"
+			        }
+			    ],
+			    "English": [
+					{
+			            "value": "en-US-AriaNeural",
+			            "text": "en-US-AriaNeural",
+			            "gender": "female"
+			        },
+			        {
+			            "value": "en-US-AvaMultilingualNeural",
+			            "text": "en-US-AvaMultilingualNeural",
+			            "gender": "female"
+			        },
+			        {
+			            "value": "en-US-AndrewMultilingualNeural",
+			            "text": "en-US-AndrewMultilingualNeural",
+			            "gender": "male"
+			        },
+			        {
+			            "value": "en-US-EmmaMultilingualNeural",
+			            "text": "en-US-EmmaMultilingualNeural",
+			            "gender": "female"
+			        },
+			        {
+			            "value": "en-US-BrianMultilingualNeural",
+			            "text": "en-US-BrianMultilingualNeural",
+			            "gender": "male"
+			        },
+			        {
+			            "value": "en-US-AvaNeural",
+			            "text": "en-US-AvaNeural",
+			            "gender": "female"
+			        },
+			        {
+			            "value": "en-US-AndrewNeural",
+			            "text": "en-US-AndrewNeural",
+			            "gender": "male"
+			        },
+			        {
+			            "value": "en-US-EmmaNeural",
+			            "text": "en-US-EmmaNeural",
+			            "gender": "female"
+			        },
+			        {
+			            "value": "en-US-BrianNeural",
+			            "text": "en-US-BrianNeural",
+			            "gender": "male"
+			        },
+			        {
+			            "value": "en-US-JennyNeural",
+			            "text": "en-US-JennyNeural",
+			            "gender": "female"
+			        },
+			        {
+			            "value": "en-US-GuyNeural",
+			            "text": "en-US-GuyNeural",
+			            "gender": "male"
+			        },
+			        {
+			            "value": "en-US-DavisNeural",
+			            "text": "en-US-DavisNeural",
+			            "gender": "male"
+			        },
+			        {
+			            "value": "en-US-JaneNeural",
+			            "text": "en-US-JaneNeural",
+			            "gender": "female"
+			        },
+			        {
+			            "value": "en-US-JasonNeural",
+			            "text": "en-US-JasonNeural",
+			            "gender": "male"
+			        },
+			        {
+			            "value": "en-US-KaiNeural",
+			            "text": "en-US-KaiNeural",
+			            "gender": "male"
+			        },
+			        {
+			            "value": "en-US-LunaNeural",
+			            "text": "en-US-LunaNeural",
+			            "gender": "female"
+			        },
+			        {
+			            "value": "en-US-SaraNeural",
+			            "text": "en-US-SaraNeural",
+			            "gender": "female"
+			        },
+			        {
+			            "value": "en-US-TonyNeural",
+			            "text": "en-US-TonyNeural",
+			            "gender": "male"
+			        },
+			        {
+			            "value": "en-US-NancyNeural",
+			            "text": "en-US-NancyNeural",
+			            "gender": "female"
+			        },
+			        {
+			            "value": "en-US-CoraMultilingualNeural",
+			            "text": "en-US-CoraMultilingualNeural",
+			            "gender": "female"
+			        },
+			        {
+			            "value": "en-US-ChristopherMultilingualNeural",
+			            "text": "en-US-ChristopherMultilingualNeural",
+			            "gender": "male"
+			        },
+			        {
+			            "value": "en-US-BrandonMultilingualNeural",
+			            "text": "en-US-BrandonMultilingualNeural",
+			            "gender": "male"
+			        },
+			        {
+			            "value": "en-US-AmberNeural",
+			            "text": "en-US-AmberNeural",
+			            "gender": "female"
+			        },
+			        {
+			            "value": "en-US-AnaNeural",
+			            "text": "en-US-AnaNeural",
+			            "gender": "female"
+			        },
+			        {
+			            "value": "en-US-AshleyNeural",
+			            "text": "en-US-AshleyNeural",
+			            "gender": "female"
+			        },
+			        {
+			            "value": "en-US-BrandonNeural",
+			            "text": "en-US-BrandonNeural",
+			            "gender": "male"
+			        },
+			        {
+			            "value": "en-US-ChristopherNeural",
+			            "text": "en-US-ChristopherNeural",
+			            "gender": "male"
+			        },
+			        {
+			            "value": "en-US-CoraNeural",
+			            "text": "en-US-CoraNeural",
+			            "gender": "female"
+			        },
+			        {
+			            "value": "en-US-ElizabethNeural",
+			            "text": "en-US-ElizabethNeural",
+			            "gender": "female"
+			        },
+			        {
+			            "value": "en-US-EricNeural",
+			            "text": "en-US-EricNeural",
+			            "gender": "male"
+			        },
+			        {
+			            "value": "en-US-JacobNeural",
+			            "text": "en-US-JacobNeural",
+			            "gender": "male"
+			        },
+			        {
+			            "value": "en-US-JennyMultilingualNeural",
+			            "text": "en-US-JennyMultilingualNeural",
+			            "gender": "female"
+			        },
+			        {
+			            "value": "en-US-MichelleNeural",
+			            "text": "en-US-MichelleNeural",
+			            "gender": "female"
+			        },
+			        {
+			            "value": "en-US-MonicaNeural",
+			            "text": "en-US-MonicaNeural",
+			            "gender": "female"
+			        },
+			        {
+			            "value": "en-US-RogerNeural",
+			            "text": "en-US-RogerNeural",
+			            "gender": "male"
+			        },
+			        {
+			            "value": "en-US-RyanMultilingualNeural",
+			            "text": "en-US-RyanMultilingualNeural",
+			            "gender": "male"
+			        },
+			        {
+			            "value": "en-US-SteffanNeural",
+			            "text": "en-US-SteffanNeural",
+			            "gender": "male"
+			        },
+			        {
+			            "value": "en-US-AdamMultilingualNeural",
+			            "text": "en-US-AdamMultilingualNeural",
+			            "gender": "male"
+			        },
+			        {
+			            "value": "en-US-AIGenerate1Neural",
+			            "text": "en-US-AIGenerate1Neural",
+			            "gender": "male"
+			        },
+			        {
+			            "value": "en-US-AIGenerate2Neural",
+			            "text": "en-US-AIGenerate2Neural",
+			            "gender": "female"
+			        },
+			        {
+			            "value": "en-US-AlloyTurboMultilingualNeural",
+			            "text": "en-US-AlloyTurboMultilingualNeural",
+			            "gender": "male"
+			        },
+			        {
+			            "value": "en-US-AmandaMultilingualNeural",
+			            "text": "en-US-AmandaMultilingualNeural",
+			            "gender": "female"
+			        },
+			        {
+			            "value": "en-US-BlueNeural",
+			            "text": "en-US-BlueNeural",
+			            "gender": "neutral"
+			        },
+			        {
+			            "value": "en-US-DavisMultilingualNeural",
+			            "text": "en-US-DavisMultilingualNeural",
+			            "gender": "male"
+			        },
+			        {
+			            "value": "en-US-DerekMultilingualNeural",
+			            "text": "en-US-DerekMultilingualNeural",
+			            "gender": "male"
+			        },
+			        {
+			            "value": "en-US-DustinMultilingualNeural",
+			            "text": "en-US-DustinMultilingualNeural",
+			            "gender": "male"
+			        },
+			        {
+			            "value": "en-US-EchoTurboMultilingualNeural",
+			            "text": "en-US-EchoTurboMultilingualNeural",
+			            "gender": "male"
+			        },
+			        {
+			            "value": "en-US-EvelynMultilingualNeural",
+			            "text": "en-US-EvelynMultilingualNeural",
+			            "gender": "female"
+			        },
+			        {
+			            "value": "en-US-FableTurboMultilingualNeural",
+			            "text": "en-US-FableTurboMultilingualNeural",
+			            "gender": "neutral"
+			        },
+			        {
+			            "value": "en-US-LewisMultilingualNeural",
+			            "text": "en-US-LewisMultilingualNeural",
+			            "gender": "male"
+			        },
+			        {
+			            "value": "en-US-LolaMultilingualNeural",
+			            "text": "en-US-LolaMultilingualNeural",
+			            "gender": "female"
+			        },
+			        {
+			            "value": "en-US-NancyMultilingualNeural",
+			            "text": "en-US-NancyMultilingualNeural",
+			            "gender": "female"
+			        },
+			        {
+			            "value": "en-US-NovaTurboMultilingualNeural",
+			            "text": "en-US-NovaTurboMultilingualNeural",
+			            "gender": "female"
+			        },
+			        {
+			            "value": "en-US-OnyxTurboMultilingualNeural",
+			            "text": "en-US-OnyxTurboMultilingualNeural",
+			            "gender": "male"
+			        },
+			        {
+			            "value": "en-US-PhoebeMultilingualNeural",
+			            "text": "en-US-PhoebeMultilingualNeural",
+			            "gender": "female"
+			        },
+			        {
+			            "value": "en-US-SamuelMultilingualNeural",
+			            "text": "en-US-SamuelMultilingualNeural",
+			            "gender": "male"
+			        },
+			        {
+			            "value": "en-US-SerenaMultilingualNeural",
+			            "text": "en-US-SerenaMultilingualNeural",
+			            "gender": "female"
+			        },
+			        {
+			            "value": "en-US-ShimmerTurboMultilingualNeural",
+			            "text": "en-US-ShimmerTurboMultilingualNeural",
+			            "gender": "female"
+			        },
+			        {
+			            "value": "en-US-SteffanMultilingualNeural",
+			            "text": "en-US-SteffanMultilingualNeural",
+			            "gender": "male"
+			        },
+			        {
+			            "value": "en-US-Andrew:DragonHDLatestNeural",
+			            "text": "en-US-Andrew:DragonHDLatestNeural",
+			            "gender": "male"
+			        },
+			        {
+			            "value": "en-US-Andrew2:DragonHDLatestNeural",
+			            "text": "en-US-Andrew2:DragonHDLatestNeural",
+			            "gender": "male"
+			        },
+			        {
+			            "value": "en-US-Aria:DragonHDLatestNeural",
+			            "text": "en-US-Aria:DragonHDLatestNeural",
+			            "gender": "female"
+			        },
+			        {
+			            "value": "en-US-Ava:DragonHDLatestNeural",
+			            "text": "en-US-Ava:DragonHDLatestNeural",
+			            "gender": "female"
+			        },
+			        {
+			            "value": "en-US-Brian:DragonHDLatestNeural",
+			            "text": "en-US-Brian:DragonHDLatestNeural",
+			            "gender": "male"
+			        },
+			        {
+			            "value": "en-US-Davis:DragonHDLatestNeural",
+			            "text": "en-US-Davis:DragonHDLatestNeural",
+			            "gender": "male"
+			        },
+			        {
+			            "value": "en-US-Emma:DragonHDLatestNeural",
+			            "text": "en-US-Emma:DragonHDLatestNeural",
+			            "gender": "female"
+			        },
+			        {
+			            "value": "en-US-Emma2:DragonHDLatestNeural",
+			            "text": "en-US-Emma2:DragonHDLatestNeural",
+			            "gender": "female"
+			        },
+			        {
+			            "value": "en-US-Jenny:DragonHDLatestNeural",
+			            "text": "en-US-Jenny:DragonHDLatestNeural",
+			            "gender": "female"
+			        },
+			        {
+			            "value": "en-US-Steffan:DragonHDLatestNeural",
+			            "text": "en-US-Steffan:DragonHDLatestNeural",
+			            "gender": "male"
+			        }
+			    ]
+			};
+            
+            // 创建English(United States)格式组
+            var EnglishGroup = $('<optgroup></optgroup>').attr('label', 'English(United States)');
+            voices.English.forEach(function(voice) {
+                EnglishGroup.append($('<option></option>')
+                    .attr('value', voice.value)
+                    .text(voice.text)
+                    .css('color', voice.gender === 'male' ? 'blue' : 'Orchid '));
+            });
+            voiceSelect.append(EnglishGroup);
+             // 创建普通话格式组
+			 var mandarinGroup = $('<optgroup></optgroup>').attr('label', '普通话');
+            voices.mandarin.forEach(function(voice) {
+                mandarinGroup.append($('<option></option>')
+                    .attr('value', voice.value)
+                    .text(voice.text)
+                    .css('color', voice.gender === 'male' ? 'blue' : 'Orchid '));
+            });
+            voiceSelect.append(mandarinGroup);     
+            // 创建东北官话格式组
+            var dongbeiGroup = $('<optgroup></optgroup>').attr('label', '东北官话');
+            voices.dongbei.forEach(function(voice) {
+                dongbeiGroup.append($('<option></option>')
+                    .attr('value', voice.value)
+                    .text(voice.text)
+                    .css('color', voice.gender === 'male' ? 'blue' : 'Orchid '));
+            });
+            voiceSelect.append(dongbeiGroup);
+             // 创建广西口音普通话格式组
+            var guangxiGroup = $('<optgroup></optgroup>').attr('label', '广西普通话');
+            voices.guangxi.forEach(function(voice) {
+                guangxiGroup.append($('<option></option>')
+                    .attr('value', voice.value)
+                    .text(voice.text)
+                    .css('color', voice.gender === 'male' ? 'blue' : 'Orchid '));
+            });
+            voiceSelect.append(guangxiGroup);
+             // 创建冀鲁官话格式组
+            var jiluGroup = $('<optgroup></optgroup>').attr('label', '冀鲁官话');
+            voices.jilu.forEach(function(voice) {
+                jiluGroup.append($('<option></option>')
+                    .attr('value', voice.value)
+                    .text(voice.text)
+                    .css('color', voice.gender === 'male' ? 'blue' : 'Orchid '));
+            });
+            voiceSelect.append(jiluGroup);
+
+             // 创建台湾普通话格式组
+            var taiwanGroup = $('<optgroup></optgroup>').attr('label', '台湾普通话');
+            voices.taiwan.forEach(function(voice) {
+                taiwanGroup.append($('<option></option>')
+                    .attr('value', voice.value)
+                    .text(voice.text)
+                    .css('color', voice.gender === 'male' ? 'blue' : 'Orchid '));
+            });
+            voiceSelect.append(taiwanGroup);
+             // 创建吴语格式组
+            var wuyuGroup = $('<optgroup></optgroup>').attr('label', '吴语');
+            voices.wuyu.forEach(function(voice) {
+                wuyuGroup.append($('<option></option>')
+                    .attr('value', voice.value)
+                    .text(voice.text)
+                    .css('color', voice.gender === 'male' ? 'blue' : 'Orchid '));
+            });
+            voiceSelect.append(wuyuGroup);
+             // 创建西南普通话格式组
+            var xinanGroup = $('<optgroup></optgroup>').attr('label', '西南普通话');
+            voices.xinan.forEach(function(voice) {
+                xinanGroup.append($('<option></option>')
+                    .attr('value', voice.value)
+                    .text(voice.text)
+                    .css('color', voice.gender === 'male' ? 'blue' : 'Orchid '));
+            });
+            voiceSelect.append(xinanGroup);
+             // 创建粤语格式组
+            var cantoneseGroup = $('<optgroup></optgroup>').attr('label', '粤语');
+            voices.cantonese.forEach(function(voice) {
+                cantoneseGroup.append($('<option></option>')
+                    .attr('value', voice.value)
+                    .text(voice.text)
+                    .css('color', voice.gender === 'male' ? 'blue' : 'Orchid '));
+            });
+            voiceSelect.append(cantoneseGroup);
+             // 创建中原官话河南格式组
+            var henanGroup = $('<optgroup></optgroup>').attr('label', '中原官话河南');
+            voices.henan.forEach(function(voice) {
+                henanGroup.append($('<option></option>')
+                    .attr('value', voice.value)
+                    .text(voice.text)
+                    .css('color', voice.gender === 'male' ? 'blue' : 'Orchid '));
+            });
+            voiceSelect.append(henanGroup);
+             // 创建中原官话陕西格式组
+            var shaanxiGroup = $('<optgroup></optgroup>').attr('label', '中原官话陕西');
+            voices.shaanxi.forEach(function(voice) {
+                shaanxiGroup.append($('<option></option>')
+                    .attr('value', voice.value)
+                    .text(voice.text)
+                    .css('color', voice.gender === 'male' ? 'blue' : 'Orchid '));
+            });
+            voiceSelect.append(shaanxiGroup);
+            
+            // 设置当前值
+            voiceSelect.val(node.voice);
+        }
     });
+    
+    </script>
 
+<script type="text/x-red" data-help-name="edge-tts">
+    <p>Microsoft Edge TTS节点，使用微软Edge浏览器的文本转语音服务将文本转换为语音。</p>
+    
+    <h3>输入</h3>
+    <dl class="message-properties">
+        <dt>payload <span class="property-type">string</span></dt>
+        <dd>如果未设置msg.text，则使用payload作为要转换为语音的文本。</dd>
+        
+        <dt class="optional">text <span class="property-type">string</span></dt>
+        <dd>要转换为语音的文本内容。如果设置了此属性，将优先于payload使用。</dd>
+        
+        <dt class="optional">filename <span class="property-type">string</span></dt>
+        <dd>语音文件的保存路径。默认为当前目录下的tts.mp3。</dd>
+        
+        <dt class="optional">voice <span class="property-type">string</span></dt>
+        <dd>语音角色。可以从配置面板的下拉菜单中选择。默认为<code>en-US-AriaNeural</code>。</dd>
+    </dl>
+    
+    <h3>高级选项</h3>
+    <dl class="message-properties">
+        <dt class="optional">format <span class="property-type">string</span></dt>
+        <dd>合成音频的格式和质量。默认为<code>audio-24khz-48kbitrate-mono-mp3</code>。</dd>
+        
+        <dt class="optional">pitch <span class="property-type">number</span></dt>
+        <dd>语音音调。范围从-50到50，默认为0。</dd>
+        
+        <dt class="optional">rate <span class="property-type">number</span></dt>
+        <dd>语音速率。范围从-50到100，默认为0。</dd>
+        
+        <dt class="optional">volume <span class="property-type">number</span></dt>
+        <dd>语音音量。范围从0到100，默认为100。</dd>
+        
+        <dt class="optional">voiceLocale <span class="property-type">string</span></dt>
+        <dd>语音区域设置。默认为en-US。</dd>
+        
+        <dt class="optional">sentenceBoundary <span class="property-type">boolean</span></dt>
+        <dd>句子边界检测。默认为false。</dd>
+        
+        <dt class="optional">wordBoundary <span class="property-type">boolean</span></dt>
+        <dd>单词边界检测。默认为false。</dd>
+        
+        <dt class="optional">agent <span class="property-type">string</span></dt>
+        <dd>代理URL，例如：socks://user:password@ip:port</dd>
+    </dl>
+    
+    <h3>输出</h3>
+    <dl class="message-properties">
+        <dt>payload <span class="property-type">buffer</span></dt>
+        <dd>包含生成的音频数据的Buffer。</dd>
+        
+        <dt>filename <span class="property-type">string</span></dt>
+        <dd>保存的音频文件路径。</dd>
+    </dl>
+    
+    <h3>详细信息</h3>
+    <p>此节点使用Microsoft Edge的文本转语音服务将文本转换为自然语音。它支持多种语言和语音角色，可以调整音调、速率和音量等参数。</p>
+    <p>有关可用语音的更多信息，请访问<a href="https://learn.microsoft.com/zh-cn/azure/ai-services/speech-service/language-support?tabs=tts" target="_blank">Microsoft文本转语音网站</a>。</p>
 </script>
+    
+    <script type="text/html" data-template-name="edge-tts">
+        <div class="form-row">
+            <label for="node-input-name"><i class="fa fa-user-o"></i> <span data-i18n="common.label.name"></span> </label>
+            <input type="text" id="node-input-name" placeholder="Name">
+        </div>
+        <div class="form-row">
+            <label for="node-input-text"><i class="fa fa-list"></i> <span data-i18n="common.label.text"></span> </label>
+            <input type="text" id="node-input-text" placeholder="">
+        </div>
+        <div class="form-row">
+            <label for="node-input-voice"><i class="fa fa-microphone"></i> <span data-i18n="common.label.voice"></span></label>
+            <select id="node-input-voice" style="width:70%">
+                <!-- 选项将从formats.json动态加载 -->
+            </select>
+        </div>
+		<div class="form-row">
+            <label for="node-input-filename"><i class="fa fa-file-audio-o"></i> <span data-i18n="common.label.filename"></span></label>
+            <input type="text" id="node-input-filename" placeholder="tts.mp3">
+        </div>
+		<div class="form-row">
+			<label for="node-input-advanced"><i class="fa fa-cogs"></i>  <span data-i18n="common.label.advanced"></span></label>
+			<input type="checkbox" id="node-input-advanced" style="display: inline-block; width: auto; vertical-align: top;">
+		</div>
+		<div id="node-input-advanced-row" style="display: none;">
+			<div class="form-row">
+				<label for="node-input-rate"  ><i class="fa fa-tachometer"></i> <span data-i18n="common.label.rate"></span></label>
+				<input type="number" id="node-input-rate"  placeholder="0" min="-50" max="100">
+			</div>
+			<div class="form-row">
+				<label for="node-input-pitch"><i class="fa fa-music"></i> <span data-i18n="common.label.pitch"></span></label>
+				<input type="number" id="node-input-pitch" placeholder="0" min="-50" max="50">
+			</div>
+			<div class="form-row">
+				<label for="node-input-volume"><i class="fa fa-volume-up"></i><span data-i18n="common.label.volume"></span> </label>
+				<input type="number" id="node-input-volume" placeholder="100" min="0" max="100">
+			</div>
+			<div class="form-row">
+				<label for="node-input-format"><i class="fa fa-file-audio-o"></i> <span data-i18n="common.label.format"></span></label>
+				<select id="node-input-format" style="width:70%">
+					<option value="audio-24khz-48kbitrate-mono-mp3">AUDIO_24KHZ_48KBITRATE_MONO_MP3</option>
+					<option value="audio-24khz-96kbitrate-mono-mp3">AUDIO_24KHZ_96KBITRATE_MONO_MP3</option>
+					<option value="webm-24khz-16bit-mono-opus">WEBM_24KHZ_16BIT_MONO_OPUS</option>
+				</select>
+			</div>
+			<div class="form-row">
+				<label for="node-input-voiceLocale"><i class="fa fa-volume-up"></i><span data-i18n="common.label.voiceLocale"></span> </label>
+				<input type="number" id="node-input-voiceLocale" placeholder="en-US">
+			</div>
+			<div class="form-row">
+				<label for="node-input-sentenceBoundary"><i class="fa fa-volume-up"></i><span data-i18n="common.label.sentenceBoundary"></span></label>
+				<input type="number" id="node-input-sentenceBoundary" placeholder="false">
+			</div>
+			<div class="form-row">
+				<label for="node-input-wordBoundary"><i class="fa fa-volume-up"></i> <span data-i18n="common.label.wordBoundary"></span></label>
+				<input type="number" id="node-input-wordBoundary" placeholder="false">
+			</div>
+			<div class="form-row">
+				<label for="node-input-proxy"><i class="fa  fa-globe"></i> <span data-i18n="common.label.proxy"></span></label>
+				<input type="number" id="node-input-proxy" placeholder="socks://user:password@proxy.example.com">
+			</div>
+		</div>
 
-<script type="text/x-red" data-template-name="edge-tts">
-    <div class="form-row">
-        <label for="node-config-input-name"><i class="icon-bookmark"></i> <span data-i18n="common.label.name"></span></label>
-        <input type="text" id="node-input-name" data-i18n="[placeholder]common.label.name">
-    </div>
-
-    <div class="form-row">
-        <label for="node-input-data"><i class="icon-tag"></i> <span data-i18n="common.label.text"></span></label>
-        <i><input type="text" id="node-input-data" data-i18n="[placeholder]common.label.text_tip"></i>
-    </div>
-	
-    <div class="form-row">
-        <label for="node-input-path"><i class="icon-tag"></i> <span data-i18n="common.label.file"></span></label>
-        <input type="text" id="node-input-path" maxlength='78' data-i18n="[placeholder]common.label.file_tip">
-    </div>
-	
-	<hr>
-    <div class="form-row">
-      <label style="width: 100%; text-align: center; color: #f4a460;"> <span data-i18n="common.label.per_tip"></span></label>
-    </div>
-
-    <div class="form-row">
-        <label for="node-input-per"> <i class="icon-tag"></i> <span data-i18n="common.label.per"></span></label>
-		<select type="text" id="node-input-per" style="width:70%">
-            <option value=""> --msg.per-- </option>
-			<optgroup label="English(United States)">
-			  <option value="en-US-JennyNeural" style="color: #ff00ff">Jenny</option>
-			  <option value="en-US-ElizabethNeural" style="color: #ff00ff">Elizabeth</option>
-			  <option value="en-US-AmberNeural" style="color: #ff00ff">Amber</option>
-			  <option value="en-US-AnaNeural" style="color: #ff00ff">Ana</option>
-			  <option value="en-US-AriaNeural" style="color: #ff00ff">Aria</option>
-			  <option value="en-US-AshleyNeural" style="color: #ff00ff">Ashley</option>
-			  <option value="en-US-MichelleNeural" style="color: #ff00ff">Michelle</option>
-			  <option value="en-US-MonicaNeural" style="color: #ff00ff">Monica</option>
-			  <option value="en-US-SaraNeural" style="color: #ff00ff">Sara</option>
-			  <option value="en-US-CoraNeural" style="color: #ff00ff">Cora</option>
-			  <option value="en-US-ChristopherNeural" style="color: #0000ff">Christopher</option>
-			  <option value="en-US-GuyNeural" style="color: #0000ff">Guy</option>
-			  <option value="en-US-BrandonNeural" style="color: #0000ff">Brandon</option>
-			  <option value="en-US-EricNeural" style="color: #0000ff">Eric</option>
-			  <option value="en-US-JacobNeural" style="color: #0000ff">Jacob</option>
-			</optgroup>
-			<optgroup label="普通话">
-			  <option value="zh-CN-XiaoxiaoNeural" style="color: #ff00ff">晓晓</option>
-			  <option value="zh-CN-XiaohanNeural" style="color: #ff00ff">晓涵</option>
-			  <option value="zh-CN-XiaomoNeural" style="color: #ff00ff">晓墨</option>
-			  <option value="zh-CN-XiaoruiNeural" style="color: #ff00ff">晓睿</option>
-			  <option value="zh-CN-XiaoxuanNeural" style="color: #ff00ff">晓萱</option>
-			  <option value="zh-CN-XiaoyouNeural" style="color: #ff00ff">晓悠</option>
-			  <option value="zh-CN-YunyangNeural" style="color: #0000ff">云扬</option>
-			  <option value="zh-CN-YunxiNeural" style="color: #0000ff">云希</option>
-			  <option value="zh-CN-YunyeNeural" style="color: #0000ff">云野</option>
-			  <option value="zh-CN-YunjianNeural" style="color: #0000ff">云健</option>
-			  <option value="zh-CN-YunxiaNeural" style="color: #0000ff">云夏</option>
-			</optgroup>
-			<optgroup label="东北话">
-			  <option value="zh-CN-liaoning-XiaobeiNeural" style="color: #ff00ff">晓北</option>
-			</optgroup>
-			<optgroup label="陕西话">
-			  <option value="zh-CN-shaanxi-XiaoniNeural" style="color: #ff00ff">晓妮</option>
-			</optgroup>
-			<optgroup label="廣東話">
-			  <option value="zh-HK-HiuMaanNeural" style="color: #ff00ff">曉曼</option>
-			  <option value="zh-HK-HiuGaaiNeural" style="color: #ff00ff">曉佳</option>
-			  <option value="zh-HK-WanLungNeural" style="color: #0000ff">雲龍</option>
-			</optgroup>
-			<optgroup label="臺灣話">
-			  <option value="zh-TW-HsiaoChenNeural" style="color: #ff00ff">曉臻</option>
-			  <option value="zh-TW-HsiaoYuNeural" style="color: #ff00ff">曉雨</option>
-			  <option value="zh-TW-YunJheNeural" style="color: #0000ff">雲哲</option>
-			</optgroup>
-
-		</select>
-    </div>
-
-	<!--
-    <div class="form-row">
-        <label for="node-input-quality"><i class="icon-tag"></i>音频合成质量</label>
-		<select type="text" id="node-input-quality" style="width:70%">
-			<option value="">msg.quality</option>
-			<option value="AUDIO_16KHZ_32KBITRATE_MONO_MP3">audio-16khz-32kbitrate-mono-mp3</option>
-			<option value="AUDIO_16KHZ_64KBITRATE_MONO_MP3">audio-16khz-64kbitrate-mono-mp3</option>
-			<option value="AUDIO_16KHZ_128KBITRATE_MONO_MP3">audio-16khz-128kbitrate-mono-mp3</option>
-			<option value="AUDIO_24KHZ_48KBITRATE_MONO_MP3">audio-24khz-48kbitrate-mono-mp3</option>
-			<option value="AUDIO_24KHZ_96KBITRATE_MONO_MP3">audio-24khz-96kbitrate-mono-mp3</option>
-			<option value="AUDIO_24KHZ_160KBITRATE_MONO_MP3">audio-24khz-160kbitrate-mono-mp3</option>
-			<option value="AUDIO_48KHZ_96KBITRATE_MONO_MP3">audio-48khz-96kbitrate-mono-mp3</option>
-			<option value="AUDIO_48KHZ_192KBITRATE_MONO_MP3">audio-48khz-192kbitrate-mono-mp3</option>
-		</select>
-    </div>
-	-->
-		
-    <div class="form-row">
-        <label style="width: 100%;text-align: center;box-sizing: border-box;" >
-          <a href="https://github.com/iso-lib/node-red-contrib-edge-tts" target="_blank"> <span data-i18n="common.label.help"></span></a>
-        </label>
-    </div>
-
-</script>
-
-
-
+    </script>
