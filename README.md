@@ -53,9 +53,173 @@ npm install node-red-contrib-edge-tts
 1. Drag the "MS Edge TTS" node from the TTS category in the palette to your flow
 2. Configure the node with your desired voice and other parameters
 3. Send a message with text to convert to speech
-3. ![](src/sample1.png)
-3. ![](src/sample2.png)
-
+4. ![](src/sample1.png)
+5. ![](src/sample2.png)
+5. example:
+```
+[
+    {
+        "id": "78d47d120957febb",
+        "type": "edge-tts",
+        "z": "f0c558c25f0f876f",
+        "name": "EDGE-TTS",
+        "voice": "en-US-AriaNeural",
+        "text": "Hello World",
+        "filename": "tts.mp3",
+        "rate": "0",
+        "pitch": "0",
+        "volume": "100",
+        "format": "audio-24khz-48kbitrate-mono-mp3",
+        "voiceLocale": "",
+        "sentenceBoundary": "",
+        "wordBoundary": "",
+        "x": 590,
+        "y": 280,
+        "wires": [
+            [
+                "a18e1cce694f3a0b"
+            ]
+        ]
+    },
+    {
+        "id": "07440fc59373f654",
+        "type": "inject",
+        "z": "f0c558c25f0f876f",
+        "name": "basic text to speech",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 370,
+        "y": 280,
+        "wires": [
+            [
+                "78d47d120957febb"
+            ]
+        ]
+    },
+    {
+        "id": "a18e1cce694f3a0b",
+        "type": "debug",
+        "z": "f0c558c25f0f876f",
+        "name": "debug 1",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 800,
+        "y": 280,
+        "wires": []
+    },
+    {
+        "id": "e562d5502180b41a",
+        "type": "edge-tts",
+        "z": "f0c558c25f0f876f",
+        "name": "EDGE-TTS",
+        "voice": "en-US-AriaNeural",
+        "text": "",
+        "filename": "",
+        "rate": "0",
+        "pitch": "0",
+        "volume": "100",
+        "format": "audio-24khz-48kbitrate-mono-mp3",
+        "voiceLocale": "",
+        "sentenceBoundary": "",
+        "wordBoundary": "",
+        "x": 590,
+        "y": 420,
+        "wires": [
+            [
+                "390baf4035c6e2c2"
+            ]
+        ]
+    },
+    {
+        "id": "6ab5012df8d88444",
+        "type": "inject",
+        "z": "f0c558c25f0f876f",
+        "name": "Advanced Usage",
+        "props": [
+            {
+                "p": "text",
+                "v": "Bonjour à tous dans le monde !",
+                "vt": "str"
+            },
+            {
+                "p": "voice",
+                "v": "fr-FR-HenriNeural",
+                "vt": "str"
+            },
+            {
+                "p": "filename",
+                "v": "/home/tts.webm",
+                "vt": "str"
+            },
+            {
+                "p": "format",
+                "v": "webm-24khz-16bit-mono-opus",
+                "vt": "str"
+            },
+            {
+                "p": "pitch",
+                "v": "10",
+                "vt": "num"
+            },
+            {
+                "p": "rate",
+                "v": "15",
+                "vt": "num"
+            },
+            {
+                "p": "volume",
+                "v": "50",
+                "vt": "num"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "x": 380,
+        "y": 420,
+        "wires": [
+            [
+                "e562d5502180b41a"
+            ]
+        ]
+    },
+    {
+        "id": "390baf4035c6e2c2",
+        "type": "debug",
+        "z": "f0c558c25f0f876f",
+        "name": "debug 2",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 800,
+        "y": 420,
+        "wires": []
+    }
+]
+```
 ### Input
 
 The node accepts the following input properties:
