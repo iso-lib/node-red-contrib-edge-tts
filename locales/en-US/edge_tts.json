@@ -1,0 +1,20 @@
+{
+  "common": {
+    "label": {
+      "name": "Name",
+      "text": "Voice Text",
+      "filename": "Filename",
+      "advanced": "Advanced Options",
+      "rate": "Speech Rate (-50% to +100%)",
+      "pitch": "Pitch (-50Hz to +50Hz)",
+      "volume": "Volume (0 to 100)",
+      "voice": "Voice Character",
+      "format": "Audio Format",
+      "voiceLocale": "Voice Region",
+      "sentenceBoundary": "Sentence Boundaries",
+      "wordBoundary": "Word Boundaries",
+      "proxy": "Proxy Link",
+      "help": "Click here for help"
+    }
+  }
+}

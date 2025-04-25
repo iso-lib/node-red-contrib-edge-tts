@@ -1,0 +1,20 @@
+{
+  "common": {
+    "label": {
+      "name": "名称",
+      "text": "语音文本",
+      "filename": "文件名",
+      "advanced": "进阶选项",
+      "rate": "语速 (-50% 到 +100%)",
+      "pitch": "音调 (-50Hz 到 +50Hz)",
+      "volume": "音量 (0 到 100)",
+      "voice":"声音角色",
+      "format": "音频格式",
+      "voiceLocale":"声音区域",
+      "sentenceBoundary":"句子边界",
+      "wordBoundary":"单词边界",
+      "proxy":"代理链接",
+      "help": "点击此处寻求帮助"
+    }
+  }
+}
