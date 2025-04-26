@@ -8,7 +8,7 @@ This node uses the Microsoft Edge Read Aloud API to generate high-quality speech
 
 
 
-## Changlog
+## Changelog
 
 ### 2025-04-25 ：
 
