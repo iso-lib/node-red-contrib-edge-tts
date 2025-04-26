@@ -282,7 +282,7 @@ Refer to the LICENSE file in the repository.
 
 ## Credits
 
-This node is based on the [msedge-tts](https://github.com/microsoft/msedge-tts) package.
+This node is based on the [msedge-tts](https://www.npmjs.com/package/msedge-tts) package.
 
 ## Issues and Contributions
 

@@ -1,6 +1,6 @@
 const { MsEdgeTTS } = require('msedge-tts');
 const fs = require('fs');
-const SocksProxyAgent = require('socks-proxy-agent') ;
+const { SocksProxyAgent } = require('socks-proxy-agent') ;
 
 module.exports = function(RED) {
     function MsEdgeTTSNode(config) {
@@ -10,6 +10,7 @@ module.exports = function(RED) {
             if (msg.agent || config.agent) {
                 const agent = new SocksProxyAgent(msg.agent || config.agent);
                 tts = new MsEdgeTTS(agent);
+                // node.send({agent: agent,tts: tts});
             } else {
                 tts = new MsEdgeTTS();
             };
