@@ -50,9 +50,13 @@ module.exports = function(RED) {
                 audioStream.on("close", () => {
                 });
                 audioStream.on('error', (err) => {
+                    const cleanError = {
+                        message: err.message,
+                        stack: err.stack
+                    };
                     node.error(`TTS stream error: ${err.message}`, msg);
                     node.status({ fill: "red", shape: "ring", text: "error" });
-                    if (done) { done(err); }
+                    if (done) { done(cleanError); }
                 });
             } catch (err) {
                 node.error('Speech synthesis failed: ' + err.message, msg);
